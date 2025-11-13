@@ -43,13 +43,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # rest framework
+    # django rest framework
     'rest_framework',
 
     # My Apps
     'authentication',
     'tela_login',
     'users',
+    'tickets',
+    'ativos',
 ]
 
 MIDDLEWARE = [
