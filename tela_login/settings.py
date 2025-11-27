@@ -111,7 +111,7 @@ ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "cadastro",
+        'NAME': "brisa_db",
         'USER': "root",
         'PASSWORD': os.getenv("DB_PASSWORD"),
         'HOST': "localhost",
