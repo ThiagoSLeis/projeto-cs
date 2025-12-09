@@ -1,4 +1,8 @@
 from rest_framework import viewsets, filters, status
+from users.permissions import IsApprovedEmployee
+from .models import Ticket
+from .serializers import TicketSerializer 
+from .permissions import CanAssignTicket
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
@@ -25,6 +29,8 @@ class UrgenciaTicketViewSet(viewsets.ModelViewSet):
 class TicketViewSet(viewsets.ModelViewSet):
     queryset = Ticket.objects.all()
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    serializer_class = TicketSerializer
+    permission_classes = [IsApprovedEmployee]
     search_fields = ['numero_ticket', 'titulo', 'descricao']
     ordering_fields = ['data_criacao', 'urgencia__nivel', 'status__ordem']
     ordering = ['-data_criacao']
@@ -50,6 +56,34 @@ class TicketViewSet(viewsets.ModelViewSet):
             queryset = queryset.filter(tipo=tipo)
             
         return queryset
+    
+    @action(detail=True, methods=['post'], permission_classes=[CanAssignTicket])
+    def atribuir(self, request, pk=None):
+        """
+        Atribui o ticket a um funcionário.
+        Apenas funcionários aprovados e admin podem usar.
+        """
+        ticket = self.get_object()
+        funcionario_id = request.data.get("funcionario_id")
+
+        try:
+            funcionario = CustomUser.objects.get(id=funcionario_id)
+        except CustomUser.DoesNotExist:
+            return Response({"erro": "Funcionário não encontrado."}, status=400)
+
+        # Verifica se o destino é funcionário aprovado ou admin
+        if funcionario.role == "funcionario" and not funcionario.is_approved:
+            return Response({"erro": "Funcionário não aprovado."}, status=400)
+
+        if funcionario.role not in ["funcionario", "admin"]:
+            return Response({"erro": "Somente funcionários e administradores podem ser responsáveis."},
+                            status=400)
+
+        ticket.responsavel = funcionario
+        ticket.save()
+
+        return Response({"status": "Ticket atribuído com sucesso!"})
+
     
     @action(detail=True, methods=['post'])
     def adicionar_interacao(self, request, pk=None):

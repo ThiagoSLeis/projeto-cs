@@ -98,7 +98,10 @@ class Ticket(models.Model):
             models.Index(fields=['data_criacao']),
             models.Index(fields=['criado_por', 'status']),
         ]
-    
+        permissions = [
+            ("atribuir_ticket", "Pode atribuir tickets a funcionários"),
+        ]
+        
     def save(self, *args, **kwargs):
         if not self.numero_ticket:
             # Gera número automático: TICKET-YYYYMMDD-XXXX

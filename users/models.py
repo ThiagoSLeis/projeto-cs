@@ -17,3 +17,20 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.cpf or self.username
+    
+    ROLE_CHOICES = (
+    ('cliente', 'Cliente'),
+    ('funcionario', 'Funcionário'),
+    ('admin', 'Administrador'),
+    )
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='cliente')
+    is_approved = models.BooleanField(default=True)  # por padrão True para clientes
+
+    # VOU DEIXAR DE OPICIONAL POR ENQUANTO (QUALQUER COISA MUDO DPS)
+    
+    def is_employee(self):
+        return self.role == 'funcionario' and self.is_approved
+    
+    def is_client(self):
+        return self.role == 'cliente'
+

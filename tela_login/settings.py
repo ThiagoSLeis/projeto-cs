@@ -179,3 +179,10 @@ LOGIN_URL = 'login'
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 DEBUG = True
 ALLOWED_HOSTS = []
+
+# Custom authentication backend (Só pra lembrar o que é)
+
+AUTHENTICATION_BACKENDS = [
+    'authentication.backends.CustomAuthBackend',
+    #'django.contrib.auth.backends.ModelBackend',  # fallback (opcional)
+]
