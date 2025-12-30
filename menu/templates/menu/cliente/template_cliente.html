@@ -1,0 +1,228 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Portal do Cliente - Citiesoft{% endblock %}</title>
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'menu/img/favico.ico' %}">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- CSS Base Cliente (obrigatório) -->
+    <link href="{% static 'menu/css/template_cliente.css' %}" rel="stylesheet">
+    
+    <!-- CSS Específico da Página (opcional) -->
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- 🔴 SCRIPT COM URLs DO DJANGO - LOGO APÓS <body> -->
+    <script>
+        // URLs do Django injetadas no JavaScript como objeto global
+        window.DjangoURLs = {
+            portal_cliente: '{% url "template_cliente" %}',
+            meus_chamados: '{% url "meus_chamados" %}',
+            base_conhecimento: '{% url "base_conhecimento" %}',
+            abrir_chamado_cliente: '{% url "abrir_chamado_cliente" %}',
+        };
+        console.log('✅ URLs Django carregadas (Portal Cliente):', window.DjangoURLs);
+    </script>
+
+    <!-- Mobile Header -->
+    <div class="mobile-header">
+        <button class="navbar-toggler" id="sidebarToggle">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="company-logo-mobile">
+            <h2>Portal do Cliente</h2>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <i class="fas fa-bars sidebar-collapsed-icon"></i>
+        
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <div class="company-logo">
+                    <h2 class="company-logo-text">Citiesoft</h2>
+                </div>
+            </div>
+
+            <div class="user-info">
+                <div class="user-avatar">{{ user.first_name|first|upper }}</div>
+                <div class="user-details">
+                    <div class="user-name">{{ user.first_name }} {{ user.last_name }}</div>
+                    <div class="user-role">Cliente</div>
+                </div>
+            </div>
+
+            <div class="sidebar-menu-container">
+                <ul class="nav flex-column" id="dynamicMenu"></ul>
+            </div>
+        </div>
+
+        <div class="sidebar-footer">
+            <form method="POST" action="{% url 'logout' %}" style="width: 100%;">
+                {% csrf_token %}
+                <button type="submit" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair do Portal</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <div class="top-bar-logo">
+                <h2 class="top-bar-logo-text">Portal do Cliente</h2>
+            </div>
+        </div>
+
+        <div class="top-bar-status-container">
+            <div class="top-bar-status">
+                <span class="status-indicator"></span>
+                <span>Online</span>
+            </div>
+            <button class="btn-toggle-theme" id="toggleTheme">
+                <i class="fa-solid fa-moon"></i>
+                <span>Modo Escuro</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Content Header -->
+        <div class="content-header">
+            {% block page_header %}
+            <h1><i class="fas fa-home"></i> Dashboard do Cliente</h1>
+            <p>Bem-vindo ao seu portal - <span id="currentDate"></span></p>
+            {% endblock %}
+        </div>
+
+        <!-- CONTEÚDO ESPECÍFICO DA PÁGINA -->
+        {% block content %}
+        <!-- Cards de Resumo do Dashboard -->
+        <div class="row g-3 mb-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="dashboard-card card-chamados-abertos">
+                    <div class="card-icon">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-title">Chamados Abertos</div>
+                        <div class="card-value">3</div>
+                        <div class="card-subtitle">Em andamento</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="dashboard-card card-aguardando">
+                    <div class="card-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-title">Aguardando Resposta</div>
+                        <div class="card-value">1</div>
+                        <div class="card-subtitle">Requer atenção</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="dashboard-card card-resolvidos">
+                    <div class="card-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-title">Resolvidos (Mês)</div>
+                        <div class="card-value">12</div>
+                        <div class="card-subtitle">Dezembro 2024</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="dashboard-card card-total">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="card-content">
+                        <div class="card-title">Total de Chamados</div>
+                        <div class="card-value">16</div>
+                        <div class="card-subtitle">Histórico completo</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ações Rápidas -->
+        <div class="quick-actions">
+            <h3 class="section-title">
+                <i class="fas fa-bolt"></i> Ações Rápidas
+            </h3>
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-4">
+                    <a href="{% url 'abrir_chamado_cliente' %}" class="quick-action-card">
+                        <div class="action-icon" style="background: linear-gradient(135deg, #28a745, #20c997);">
+                            <i class="fas fa-plus-circle"></i>
+                        </div>
+                        <div class="action-content">
+                            <h5>Abrir Novo Chamado</h5>
+                            <p>Relate um problema ou solicite suporte</p>
+                        </div>
+                        <i class="fas fa-chevron-right action-arrow"></i>
+                    </a>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <a href="{% url 'meus_chamados' %}" class="quick-action-card">
+                        <div class="action-icon" style="background: linear-gradient(135deg, #00A6FF, #0056b3);">
+                            <i class="fas fa-list"></i>
+                        </div>
+                        <div class="action-content">
+                            <h5>Ver Meus Chamados</h5>
+                            <p>Acompanhe o status dos seus chamados</p>
+                        </div>
+                        <i class="fas fa-chevron-right action-arrow"></i>
+                    </a>
+                </div>
+
+                <div class="col-md-6 col-lg-4">
+                    <a href="{% url 'base_conhecimento' %}" class="quick-action-card">
+                        <div class="action-icon" style="background: linear-gradient(135deg, #ffc107, #ff9800);">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="action-content">
+                            <h5>Base de Conhecimento</h5>
+                            <p>Encontre respostas e tutoriais</p>
+                        </div>
+                        <i class="fas fa-chevron-right action-arrow"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- JS Base Cliente (obrigatório) -->
+    <script src="{% static 'menu/js/template_cliente.js' %}"></script>
+    
+    <!-- JS Específico da Página (opcional) -->
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,219 @@
+{% extends 'template_citiesoft.html' %}
+{% load static %}
+
+{% block title %}Atribuição de Tickets - Citiesoft{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'menu/css/atribuicao_tickets.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block page_header %}
+<h1>
+    <i class="fas fa-users-cog"></i> Atribuição de Tickets
+</h1>
+<p>
+    Gerencie e distribua tickets entre a equipe de suporte • 
+    <span id="currentDate"></span> • 
+    <span id="userInfoHeader"></span>
+</p>
+{% endblock %}
+
+{% block content %}
+<!-- STATS CARDS -->
+<div class="stats-grid">
+    <div class="stat-card stat-total">
+        <div class="stat-icon"><i class="fas fa-ticket-alt"></i></div>
+        <div class="stat-content">
+            <div class="stat-value" id="totalTickets">0</div>
+            <div class="stat-label">Total de Tickets</div>
+        </div>
+    </div>
+    <div class="stat-card stat-open">
+        <div class="stat-icon"><i class="fas fa-folder-open"></i></div>
+        <div class="stat-content">
+            <div class="stat-value" id="abertosCount">0</div>
+            <div class="stat-label">Abertos</div>
+        </div>
+    </div>
+    <div class="stat-card stat-progress">
+        <div class="stat-icon"><i class="fas fa-tasks"></i></div>
+        <div class="stat-content">
+            <div class="stat-value" id="progrisoCount">0</div>
+            <div class="stat-label">Em Andamento</div>
+        </div>
+    </div>
+    <div class="stat-card stat-waiting">
+        <div class="stat-icon"><i class="fas fa-clock"></i></div>
+        <div class="stat-content">
+            <div class="stat-value" id="aguardandoCount">0</div>
+            <div class="stat-label">Aguardando</div>
+        </div>
+    </div>
+    <div class="stat-card stat-closed">
+        <div class="stat-icon"><i class="fas fa-check-circle"></i></div>
+        <div class="stat-content">
+            <div class="stat-value" id="fechadosCount">0</div>
+            <div class="stat-label">Concluídos</div>
+        </div>
+    </div>
+</div>
+
+<!-- FILTROS -->
+<div class="filters-section">
+    <div class="filters-header">
+        <h2><i class="fas fa-filter"></i> Filtros e Busca</h2>
+        <div class="filters-actions">
+            <button class="btn-action btn-refresh" id="btnRefresh">
+                <i class="fas fa-sync-alt"></i> Atualizar
+            </button>
+            <button class="btn-action btn-clear" id="btnClearFilters">
+                <i class="fas fa-eraser"></i> Limpar
+            </button>
+        </div>
+    </div>
+    <div class="filters-grid">
+        <div class="filter-group">
+            <label class="filter-label"><i class="fas fa-info-circle"></i> Status</label>
+            <select class="filter-select" id="filterStatus">
+                <option value="">Todos os Status</option>
+                <option value="aberto">🔴 Aberto</option>
+                <option value="em_progresso">🟡 Em Andamento</option>
+                <option value="aguardando">🟠 Aguardando</option>
+                <option value="fechado">🟢 Concluído</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label"><i class="fas fa-exclamation-triangle"></i> Prioridade</label>
+            <select class="filter-select" id="filterPriority">
+                <option value="">Todas as Prioridades</option>
+                <option value="alto">🔴 Alta</option>
+                <option value="medio">🟡 Média</option>
+                <option value="baixo">🟢 Baixa</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label"><i class="fas fa-user-tie"></i> Técnico</label>
+            <select class="filter-select" id="filterTechnician">
+                <option value="">Todos os Técnicos</option>
+                <option value="nao_atribuido">⚪ Não Atribuído</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label"><i class="fas fa-search"></i> Pesquisar</label>
+            <input type="text" class="filter-input" id="searchInput" placeholder="ID, título, cliente...">
+        </div>
+    </div>
+</div>
+
+<!-- LOADING -->
+<div id="loadingState" class="loading-state" style="display: none;">
+    <div class="loading-spinner"></div>
+    <p>Carregando tickets...</p>
+</div>
+
+<!-- TICKETS -->
+<div class="tickets-grid" id="ticketsGrid"></div>
+
+<!-- MODAL ATRIBUIÇÃO -->
+<div class="modal fade" id="attributionModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="attributionModalLabel">
+                    <i class="fas fa-user-check"></i> Atribuir Ticket
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="attributionForm" novalidate>
+                {% csrf_token %}
+                <div class="modal-body">
+                    <div class="ticket-info-box">
+                        <div class="info-row">
+                            <div class="info-item">
+                                <label><i class="fas fa-hashtag"></i> ID do Ticket</label>
+                                <input type="text" class="form-control-modal" id="modalTicketId" readonly>
+                            </div>
+                            <div class="info-item">
+                                <label><i class="fas fa-heading"></i> Título</label>
+                                <input type="text" class="form-control-modal" id="modalTicketTitle" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group-modal">
+                        <label class="form-label-modal required">
+                            <i class="fas fa-user-tie"></i> Técnico
+                        </label>
+                        <select class="form-select-modal" id="modalTechnician" required>
+                            <option value="">Selecione...</option>
+                        </select>
+                        <div class="invalid-feedback">Selecione um técnico</div>
+                    </div>
+                    <div class="form-group-modal">
+                        <label class="form-label-modal">
+                            <i class="fas fa-layer-group"></i> Escalonamento
+                        </label>
+                        <select class="form-select-modal" id="modalEscalation">
+                            <option value="n1">Nível 1</option>
+                            <option value="n2">Nível 2</option>
+                            <option value="n3">Nível 3</option>
+                        </select>
+                    </div>
+                    <div class="form-group-modal">
+                        <label class="form-label-modal">
+                            <i class="fas fa-comment-alt"></i> Observações
+                        </label>
+                        <textarea class="form-textarea-modal" id="modalObservations" rows="4" maxlength="500"></textarea>
+                        <small class="char-counter"><span id="charCount">0</span> / 500</small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-modal btn-cancel" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="btn-modal btn-confirm">
+                        <i class="fas fa-check"></i> Confirmar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- MODAL HISTÓRICO -->
+<div class="modal fade" id="historyModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-history"></i> Histórico <span id="historyTicketId"></span>
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="history-timeline" id="historyContent"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-modal btn-cancel" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Fechar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Script de Configuração do Usuário -->
+<script>
+    // Dados do usuário atual vindos do Django
+    window.CURRENT_USER = {
+        id: '{{ user.username }}',
+        name: '{{ user.get_full_name|default:user.username }}',
+        role: {% if user.is_superuser or user.is_staff %}'admin'{% else %}'technician'{% endif %}
+    };
+    console.log('✓ Usuário atual:', window.CURRENT_USER);
+</script>
+
+<!-- JavaScript da Aplicação -->
+<script src="{% static 'menu/js/atribuicao_tickets.js' %}"></script>
+{% endblock %}

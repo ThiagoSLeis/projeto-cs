@@ -1,0 +1,203 @@
+{% extends 'menu/cliente/template_cliente.html' %}
+{% load static %}
+
+{% block title %}Meus Chamados - Portal do Cliente{% endblock %}
+
+{% block page_header %}
+<h1><i class="fas fa-ticket-alt"></i> Meus Chamados</h1>
+<p>Acompanhe o status dos seus chamados - <span id="currentDate"></span></p>
+{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'menu/css/meus_chamados.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<!-- Filtros por Status -->
+<div class="filter-tabs">
+    <div class="filter-tab active" data-filter="todos">
+        <i class="fas fa-list"></i>
+        Todos
+        <span class="badge">15</span>
+    </div>
+    <div class="filter-tab" data-filter="abertos">
+        <i class="fas fa-hourglass-half"></i>
+        Abertos / Em Andamento
+        <span class="badge">3</span>
+    </div>
+    <div class="filter-tab" data-filter="aguardando">
+        <i class="fas fa-exclamation-circle"></i>
+        Aguardando Resposta
+        <span class="badge">1</span>
+    </div>
+    <div class="filter-tab" data-filter="resolvidos">
+        <i class="fas fa-check-circle"></i>
+        Resolvidos / Fechados
+        <span class="badge">11</span>
+    </div>
+</div>
+
+<!-- Card Principal -->
+<div class="card-chamados">
+    <!-- Header com Busca e Botão -->
+    <div class="card-chamados-header">
+        <div class="search-box">
+            <input type="text" id="searchInput" placeholder="Buscar por ID, título ou descrição...">
+            <i class="fas fa-search"></i>
+        </div>
+        <button class="btn-novo-chamado" onclick="window.location.href='{% url 'abrir_chamado' %}'">
+            <i class="fas fa-plus-circle"></i>
+            Novo Chamado
+        </button>
+    </div>
+
+    <!-- Tabela de Chamados -->
+    <div class="table-responsive">
+        <table class="table-chamados" id="tableChamados">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Título</th>
+                    <th>Status</th>
+                    <th>Prioridade</th>
+                    <th>Categoria</th>
+                    <th>Data Abertura</th>
+                    <th>Última Atualização</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="chamadosTableBody">
+                <!-- Exemplo de linha 1 -->
+                <tr data-status="aguardando">
+                    <td><span class="chamado-id">#1234</span></td>
+                    <td><strong>Problema com login no sistema</strong></td>
+                    <td>
+                        <span class="status-badge status-aguardando">
+                            <i class="fas fa-exclamation-circle"></i>
+                            Aguardando Resposta
+                        </span>
+                    </td>
+                    <td><span class="prioridade-badge prioridade-alta">Alta</span></td>
+                    <td>TI / Acesso</td>
+                    <td>20/12/2024</td>
+                    <td>23/12/2024 14:30</td>
+                    <td>
+                        <button class="btn-action btn-view" onclick="verChamado(1234)">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                    </td>
+                </tr>
+
+                <!-- Exemplo de linha 2 -->
+                <tr data-status="andamento">
+                    <td><span class="chamado-id">#1233</span></td>
+                    <td><strong>Solicitação de novo equipamento</strong></td>
+                    <td>
+                        <span class="status-badge status-andamento">
+                            <i class="fas fa-sync-alt"></i>
+                            Em Andamento
+                        </span>
+                    </td>
+                    <td><span class="prioridade-badge prioridade-media">Média</span></td>
+                    <td>TI / Hardware</td>
+                    <td>18/12/2024</td>
+                    <td>22/12/2024 10:15</td>
+                    <td>
+                        <button class="btn-action btn-view" onclick="verChamado(1233)">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                    </td>
+                </tr>
+
+                <!-- Exemplo de linha 3 -->
+                <tr data-status="aberto">
+                    <td><span class="chamado-id">#1232</span></td>
+                    <td><strong>Dúvida sobre relatórios</strong></td>
+                    <td>
+                        <span class="status-badge status-aberto">
+                            <i class="fas fa-folder-open"></i>
+                            Aberto
+                        </span>
+                    </td>
+                    <td><span class="prioridade-badge prioridade-baixa">Baixa</span></td>
+                    <td>Financeiro</td>
+                    <td>22/12/2024</td>
+                    <td>22/12/2024 16:00</td>
+                    <td>
+                        <button class="btn-action btn-view" onclick="verChamado(1232)">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                    </td>
+                </tr>
+
+                <!-- Exemplo de linha 4 -->
+                <tr data-status="resolvido">
+                    <td><span class="chamado-id">#1231</span></td>
+                    <td><strong>Erro ao gerar nota fiscal</strong></td>
+                    <td>
+                        <span class="status-badge status-resolvido">
+                            <i class="fas fa-check-circle"></i>
+                            Resolvido
+                        </span>
+                    </td>
+                    <td><span class="prioridade-badge prioridade-urgente">Urgente</span></td>
+                    <td>Financeiro</td>
+                    <td>15/12/2024</td>
+                    <td>16/12/2024 09:20</td>
+                    <td>
+                        <button class="btn-action btn-view" onclick="verChamado(1231)">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                    </td>
+                </tr>
+
+                <!-- Exemplo de linha 5 -->
+                <tr data-status="fechado">
+                    <td><span class="chamado-id">#1230</span></td>
+                    <td><strong>Resetar senha</strong></td>
+                    <td>
+                        <span class="status-badge status-fechado">
+                            <i class="fas fa-times-circle"></i>
+                            Fechado
+                        </span>
+                    </td>
+                    <td><span class="prioridade-badge prioridade-media">Média</span></td>
+                    <td>TI / Acesso</td>
+                    <td>10/12/2024</td>
+                    <td>10/12/2024 15:45</td>
+                    <td>
+                        <button class="btn-action btn-view" onclick="verChamado(1230)">
+                            <i class="fas fa-eye"></i> Ver
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Empty State (mostrar quando não houver chamados) -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <i class="fas fa-inbox"></i>
+            <h3>Nenhum chamado encontrado</h3>
+            <p>Não há chamados com os filtros selecionados.</p>
+        </div>
+    </div>
+
+    <!-- Paginação -->
+    <div class="pagination-container">
+        <div>
+            Mostrando <strong>1-5</strong> de <strong>15</strong> chamados
+        </div>
+        <div class="pagination">
+            <button class="page-btn"><i class="fas fa-chevron-left"></i></button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'menu/js/meus_chamados.js' %}"></script>
+{% endblock %}

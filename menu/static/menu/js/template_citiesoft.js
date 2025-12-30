@@ -14,29 +14,29 @@ function initializeMenuConfig() {
             active: true
         },
         {
-            id: 'inventarios',
-            title: 'Inventários',
+            id: 'Chamados',
+            title: 'Chamados',
             icon: 'fas fa-clipboard-list',
             url: '#',
             submenu: [
                 { 
-                    id: 'inventario-ativos', 
-                    title: 'Ativos', 
-                    url: window.DjangoURLs ? window.DjangoURLs.relatorio_ativos : '#', 
+                    id: 'Cadastro-ativos', 
+                    title: 'Cadastro de Ativos', 
+                    url: window.DjangoURLs ? window.DjangoURLs.cadastro_ativo : '#', 
                     icon: 'fas fa-laptop' 
                 },
                 { 
-                    id: 'inventario-tickets', 
-                    title: 'Tickets', 
-                    url: '#', 
+                    id: 'Abertura-tickets', 
+                    title: 'Abertura de Tickets', 
+                    url: window.DjangoURLs ? window.DjangoURLs.abrir_chamado : '#', 
                     icon: 'fas fa-ticket-alt' 
                 },
-                { 
+                /*{ 
                     id: 'inventario-chamados', 
                     title: 'Chamados (OCS)', 
                     url: window.DjangoURLs ? window.DjangoURLs.abrir_chamado : '#', 
                     icon: 'fas fa-headset' 
-                }
+                }*/,
             ]
         },
         {
@@ -60,7 +60,7 @@ function initializeMenuConfig() {
                 { 
                     id: 'relatorio-usuarios', 
                     title: 'Relatório de Usuários', 
-                    url: '#', 
+                    url: window.DjangoURLs ? window.DjangoURLs.pessoas_ativas : '#', 
                     icon: 'fas fa-users' 
                 },
                 { 
@@ -72,30 +72,29 @@ function initializeMenuConfig() {
             ]
         },
         {
-            id: 'cadastros',
-            title: 'Cadastros',
+            id: 'Gestão de usuários',
+            title: 'Gestão de usuários',
             icon: 'fas fa-edit',
             url: '#',
             submenu: [
                 { 
                     id: 'cadastro-usuarios', 
                     title: 'Usuários', 
-                    url: '#', 
+                    url: window.DjangoURLs ? window.DjangoURLs.register : '#', 
                     icon: 'fas fa-user-cog' 
                 },
                 { 
-                    id: 'cadastro-clientes', 
-                    title: 'Clientes', 
-                    url: '#', 
+                    id: 'Autorização-usuarios', 
+                    title: 'Autorização de Usuários', 
+                    url: window.DjangoURLs ? window.DjangoURLs.autorizacao_usuarios : '#', 
                     icon: 'fas fa-user' 
                 },
                 { 
-                    id: 'cadastro-ativos', 
-                    title: 'Ativos', 
-                    url: window.DjangoURLs ? window.DjangoURLs.cadastro_ativo : '#', 
+                    id: 'Atribuição-tickets', 
+                    title: 'Atribuição de Tickets', 
+                    url: window.DjangoURLs ? window.DjangoURLs.atribuicao_tickets : '#', 
                     icon: 'fas fa-laptop' 
-                }
-            ]
+                }            ]
         },
         {
             type: 'divider'
@@ -104,7 +103,7 @@ function initializeMenuConfig() {
             id: 'metricas-kpi',
             title: 'Métricas KPI',
             icon: 'fas fa-chart-line',
-            url: '#',
+            url: window.DjangoURLs ? window.DjangoURLs.metricas_kpi : '#',
             active: false
         },
         {

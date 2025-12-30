@@ -1,0 +1,253 @@
+{% extends 'menu/cliente/template_cliente.html' %}
+{% load static %}
+
+{% block title %}Busca: "{{ query }}" - Base de Conhecimento{% endblock %}
+
+{% block page_header %}
+<div class="breadcrumb-nav">
+    <a href="{% url 'base_conhecimento' %}"><i class="fas fa-book"></i> Central de Ajuda</a>
+    <i class="fas fa-chevron-right"></i>
+    <span>Resultados da Busca</span>
+</div>
+<h1><i class="fas fa-search"></i> Resultados da Busca</h1>
+<p>Mostrando resultados para: <strong>"{{ query }}"</strong></p>
+{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'menu/css/base_conhecimento.css' %}" rel="stylesheet">
+<link href="{% static 'menu/css/busca_resultados.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<!-- Barra de Busca -->
+<div class="search-header">
+    <div class="search-box-large">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Digite sua busca..." value="{{ query }}">
+        <button onclick="performNewSearch()">
+            <i class="fas fa-search"></i> Buscar
+        </button>
+    </div>
+</div>
+
+<div class="search-container">
+    
+    <!-- Filtros Laterais -->
+    <div class="search-filters">
+        
+        <!-- Filtro por Categoria -->
+        <div class="filter-section">
+            <h4><i class="fas fa-folder"></i> Categorias</h4>
+            
+            <div class="filter-option">
+                <input type="checkbox" id="cat-all" checked>
+                <label for="cat-all">Todas as categorias</label>
+                <span class="filter-count">{{ total_results }}</span>
+            </div>
+            
+            <div class="filter-option">
+                <input type="checkbox" id="cat-locacao">
+                <label for="cat-locacao">Locação de Equipamentos</label>
+                <span class="filter-count">12</span>
+            </div>
+            
+            <div class="filter-option">
+                <input type="checkbox" id="cat-suporte">
+                <label for="cat-suporte">Suporte Técnico</label>
+                <span class="filter-count">8</span>
+            </div>
+            
+            <div class="filter-option">
+                <input type="checkbox" id="cat-desenvolvimento">
+                <label for="cat-desenvolvimento">Desenvolvimento</label>
+                <span class="filter-count">5</span>
+            </div>
+        </div>
+
+        <!-- Filtro por Tipo -->
+        <div class="filter-section">
+            <h4><i class="fas fa-tags"></i> Tipo de Conteúdo</h4>
+            
+            <div class="filter-option">
+                <input type="radio" name="tipo" id="tipo-all" checked>
+                <label for="tipo-all">Todos</label>
+            </div>
+            
+            <div class="filter-option">
+                <input type="radio" name="tipo" id="tipo-tutorial">
+                <label for="tipo-tutorial">Tutorial</label>
+            </div>
+            
+            <div class="filter-option">
+                <input type="radio" name="tipo" id="tipo-guia">
+                <label for="tipo-guia">Guia</label>
+            </div>
+            
+            <div class="filter-option">
+                <input type="radio" name="tipo" id="tipo-faq">
+                <label for="tipo-faq">FAQ</label>
+            </div>
+        </div>
+
+        <!-- Filtro por Data -->
+        <div class="filter-section">
+            <h4><i class="fas fa-calendar"></i> Data de Publicação</h4>
+            
+            <div class="filter-option">
+                <input type="radio" name="data" id="data-all" checked>
+                <label for="data-all">Qualquer data</label>
+            </div>
+            
+            <div class="filter-option">
+                <input type="radio" name="data" id="data-week">
+                <label for="data-week">Última semana</label>
+            </div>
+            
+            <div class="filter-option">
+                <input type="radio" name="data" id="data-month">
+                <label for="data-month">Último mês</label>
+            </div>
+            
+            <div class="filter-option">
+                <input type="radio" name="data" id="data-year">
+                <label for="data-year">Último ano</label>
+            </div>
+        </div>
+
+        <button class="clear-filters" onclick="clearAllFilters()">
+            <i class="fas fa-times-circle"></i> Limpar Filtros
+        </button>
+
+    </div>
+
+    <!-- Resultados -->
+    <div class="search-results">
+        
+        <!-- Cabeçalho dos Resultados -->
+        <div class="results-header">
+            <div class="results-count">
+                <strong id="resultsCount">{{ results|length }}</strong> resultados encontrados para "<strong>{{ query }}</strong>"
+            </div>
+            
+            <div class="sort-options">
+                <label for="sortResults">Ordenar:</label>
+                <select id="sortResults">
+                    <option value="relevancia">Mais relevantes</option>
+                    <option value="recentes">Mais recentes</option>
+                    <option value="antigos">Mais antigos</option>
+                    <option value="visualizacoes">Mais visualizados</option>
+                    <option value="avaliacao">Melhor avaliados</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Lista de Resultados -->
+        {% if results %}
+            <div id="resultsContainer">
+                {% for resultado in results %}
+                <div class="result-item" data-category="{{ resultado.categoria_slug }}" data-type="{{ resultado.tipo }}" data-date="{{ resultado.data_publicacao|date:'Y-m-d' }}" onclick="window.location.href='{% url 'artigo_detalhe' resultado.slug %}'">
+                    <div class="result-header">
+                        <div class="result-title-area">
+                            <h3 class="result-title">
+                                {{ resultado.titulo }}
+                            </h3>
+                            <div class="result-breadcrumb">
+                                <i class="fas fa-folder"></i>
+                                <span>{{ resultado.categoria }}</span>
+                                <i class="fas fa-chevron-right"></i>
+                                <span>{{ resultado.tipo|upper }}</span>
+                            </div>
+                        </div>
+                        <span class="result-badge article-badge-{{ resultado.tipo }}">
+                            {{ resultado.tipo|upper }}
+                        </span>
+                    </div>
+                    
+                    <p class="result-excerpt">
+                        {{ resultado.resumo }}
+                    </p>
+                    
+                    <div class="result-meta">
+                        <div class="result-meta-item">
+                            <i class="fas fa-calendar"></i>
+                            <span>{{ resultado.data_publicacao|date:"d/m/Y" }}</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <i class="fas fa-clock"></i>
+                            <span>{{ resultado.tempo_leitura }} min de leitura</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <i class="fas fa-eye"></i>
+                            <span>{{ resultado.visualizacoes }} visualizações</span>
+                        </div>
+                        <div class="result-meta-item">
+                            <i class="fas fa-star"></i>
+                            <span>{{ resultado.avaliacao }}/5.0</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Paginação -->
+            <div class="pagination" style="margin-top: 40px;">
+                <button class="pagination-btn" id="prevPage" onclick="changePage(-1)">
+                    <i class="fas fa-chevron-left"></i> Anterior
+                </button>
+                
+                <button class="pagination-btn active">1</button>
+                <button class="pagination-btn">2</button>
+                <button class="pagination-btn">3</button>
+                
+                <button class="pagination-btn" id="nextPage" onclick="changePage(1)">
+                    Próxima <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+        {% else %}
+            <!-- Nenhum Resultado -->
+            <div class="no-results">
+                <div class="no-results-icon">
+                    <i class="fas fa-search-minus"></i>
+                </div>
+                <h3>Nenhum resultado encontrado</h3>
+                <p>Não encontramos artigos que correspondam à sua busca por "<strong>{{ query }}</strong>"</p>
+                
+                <div class="suggestions">
+                    <h4>Sugestões para melhorar sua busca:</h4>
+                    <ul>
+                        <li>Verifique se todas as palavras estão escritas corretamente</li>
+                        <li>Tente usar palavras-chave diferentes ou mais gerais</li>
+                        <li>Use menos palavras na busca</li>
+                        <li>Tente buscar por sinônimos ou termos relacionados</li>
+                    </ul>
+                </div>
+
+                <div class="popular-searches-section">
+                    <h4 style="color: var(--text-dark); margin-bottom: 15px;">
+                        <i class="fas fa-fire"></i> Buscas populares:
+                    </h4>
+                    <a href="?q=renovar+contrato" class="popular-search-item">Renovar contrato</a>
+                    <a href="?q=trocar+equipamento" class="popular-search-item">Trocar equipamento</a>
+                    <a href="?q=suporte+técnico" class="popular-search-item">Suporte técnico</a>
+                    <a href="?q=backup+dados" class="popular-search-item">Backup de dados</a>
+                    <a href="?q=acompanhar+projeto" class="popular-search-item">Acompanhar projeto</a>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'menu/js/base_conhecimento.js' %}"></script>
+<script src="{% static 'menu/js/busca_resultados.js' %}"></script>
+<script>
+    // Passar dados do Django para o JavaScript
+    const SEARCH_QUERY = '{{ query }}';
+</script>
+{% endblock %}

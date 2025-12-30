@@ -1,0 +1,221 @@
+{% extends "template_citiesoft.html" %}
+{% load static %}
+
+{% block title %}Métricas KPI - Citiesoft{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'menu/css/metricas_kpi.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block page_header %}
+<div class="header-actions">
+    <div>
+        <h1><i class="fas fa-chart-line me-2"></i>Métricas KPI</h1>
+        <p class="mb-0 mt-2">Acompanhe os indicadores-chave de desempenho - <span id="currentDate"></span></p>
+    </div>
+    <a href="{% url 'citiesoft_home' %}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left me-2"></i>Voltar
+    </a>
+</div>
+{% endblock %}
+
+{% block content %}
+
+    <!-- FILTROS -->
+    <div class="card filters-card">
+        <div class="card-header">
+            <i class="fas fa-filter"></i> Filtros
+        </div>
+        <div class="card-body">
+            <div class="filters-row">
+                <div>
+                    <label class="form-label">Período</label>
+                    <select class="form-select" id="filterPeriod">
+                        <option value="mes">Este Mês</option>
+                        <option value="trimestre">Este Trimestre</option>
+                        <option value="ano">Este Ano</option>
+                        <option value="customizado">Customizado</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="form-label">Departamento</label>
+                    <select class="form-select" id="filterDepartment">
+                        <option value="">Todos</option>
+                        <option value="suporte">Suporte</option>
+                        <option value="desenvolvimento">Desenvolvimento</option>
+                        <option value="infraestrutura">Infraestrutura</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- KPIs PRINCIPAIS -->
+    <div class="kpis-grid">
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <h3>Taxa de Atendimento</h3>
+                <i class="fas fa-phone"></i>
+            </div>
+            <div class="kpi-value">94.5%</div>
+            <div class="kpi-change positive">
+                <i class="fas fa-arrow-up"></i> +2.5% vs mês anterior
+            </div>
+            <div class="kpi-bar">
+                <div class="kpi-bar-fill" style="width: 94.5%;"></div>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <h3>Tempo Médio de Resolução</h3>
+                <i class="fas fa-hourglass-end"></i>
+            </div>
+            <div class="kpi-value">2h 15min</div>
+            <div class="kpi-change negative">
+                <i class="fas fa-arrow-down"></i> -15min vs meta
+            </div>
+            <div class="kpi-bar">
+                <div class="kpi-bar-fill" style="width: 78%; background: #28a745;"></div>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <h3>Satisfação do Cliente</h3>
+                <i class="fas fa-smile"></i>
+            </div>
+            <div class="kpi-value">4.8/5.0</div>
+            <div class="kpi-change positive">
+                <i class="fas fa-arrow-up"></i> +0.3 vs trimestre anterior
+            </div>
+            <div class="kpi-bar">
+                <div class="kpi-bar-fill" style="width: 96%; background: #ffc107;"></div>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <h3>Tickets Resolvidos</h3>
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <div class="kpi-value">523</div>
+            <div class="kpi-change positive">
+                <i class="fas fa-arrow-up"></i> +45 vs mês anterior
+            </div>
+            <div class="kpi-bar">
+                <div class="kpi-bar-fill" style="width: 87%; background: #17a2b8;"></div>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <h3>Tickets em Aberto</h3>
+                <i class="fas fa-exclamation-circle"></i>
+            </div>
+            <div class="kpi-value">42</div>
+            <div class="kpi-change negative">
+                <i class="fas fa-arrow-up"></i> +12 vs mês anterior
+            </div>
+            <div class="kpi-bar">
+                <div class="kpi-bar-fill" style="width: 65%; background: #dc3545;"></div>
+            </div>
+        </div>
+
+        <div class="kpi-card">
+            <div class="kpi-header">
+                <h3>Uptime do Sistema</h3>
+                <i class="fas fa-server"></i>
+            </div>
+            <div class="kpi-value">99.9%</div>
+            <div class="kpi-change positive">
+                <i class="fas fa-arrow-up"></i> Meta atingida
+            </div>
+            <div class="kpi-bar">
+                <div class="kpi-bar-fill" style="width: 99.9%; background: #28a745;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GRÁFICOS -->
+    <div class="charts-row">
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3><i class="fas fa-chart-bar"></i> Tickets por Status</h3>
+            </div>
+            <canvas id="chartStatus" class="chart-canvas"></canvas>
+        </div>
+
+        <div class="chart-card">
+            <div class="chart-header">
+                <h3><i class="fas fa-chart-pie"></i> Distribuição por Prioridade</h3>
+            </div>
+            <canvas id="chartPriority" class="chart-canvas"></canvas>
+        </div>
+    </div>
+
+    <div class="charts-row">
+        <div class="chart-card full-width">
+            <div class="chart-header">
+                <h3><i class="fas fa-chart-line"></i> Tendência de Tickets (Últimos 7 dias)</h3>
+            </div>
+            <canvas id="chartTrend" class="chart-canvas"></canvas>
+        </div>
+    </div>
+
+    <!-- TABELA DE DESEMPENHO -->
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-table"></i> Desempenho por Técnico
+        </div>
+        <div class="card-body">
+            <table class="performance-table">
+                <thead>
+                    <tr>
+                        <th>Técnico</th>
+                        <th>Tickets Resolvidos</th>
+                        <th>Tempo Médio</th>
+                        <th>Satisfação</th>
+                        <th>Taxa de Sucesso</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>João Silva</strong></td>
+                        <td>145</td>
+                        <td>2h 10min</td>
+                        <td><span class="badge-success">4.9/5.0</span></td>
+                        <td><span class="progress-bar">95%</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Maria Santos</strong></td>
+                        <td>138</td>
+                        <td>2h 25min</td>
+                        <td><span class="badge-success">4.7/5.0</span></td>
+                        <td><span class="progress-bar">92%</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Carlos Oliveira</strong></td>
+                        <td>132</td>
+                        <td>2h 05min</td>
+                        <td><span class="badge-success">4.8/5.0</span></td>
+                        <td><span class="progress-bar">93%</span></td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ana Costa</strong></td>
+                        <td>108</td>
+                        <td>2h 30min</td>
+                        <td><span class="badge-warning">4.5/5.0</span></td>
+                        <td><span class="progress-bar">88%</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="{% static 'menu/js/metricas_kpi.js' %}"></script>
+{% endblock %}

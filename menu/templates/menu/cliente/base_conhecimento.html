@@ -1,0 +1,344 @@
+{% extends 'menu/cliente/template_cliente.html' %}
+{% load static %}
+
+{% block title %}Central de Ajuda - Portal do Cliente{% endblock %}
+
+{% block page_header %}
+<h1><i class="fas fa-book"></i> Central de Ajuda</h1>
+<p>Encontre tutoriais e respostas sobre seus equipamentos e projetos - <span id="currentDate"></span></p>
+{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'menu/css/base_conhecimento.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+
+<!-- Barra de Busca Principal -->
+<div class="search-hero">
+    <div class="search-hero-content">
+        <h2>Como podemos ajudar você hoje?</h2>
+        <p class="subtitle">Tire suas dúvidas sobre locação de equipamentos e desenvolvimento de software</p>
+        <div class="search-box-hero">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchKnowledge" placeholder="Ex: 'renovar contrato', 'trocar equipamento', 'backup de dados'...">
+        </div>
+        <div class="popular-searches">
+            <span>Buscas populares:</span>
+            <a href="#" class="search-tag">Renovar contrato</a>
+            <a href="#" class="search-tag">Trocar equipamento</a>
+            <a href="#" class="search-tag">Solicitar suporte técnico</a>
+            <a href="#" class="search-tag">Acompanhar projeto</a>
+        </div>
+    </div>
+</div>
+
+<!-- Categorias Principais -->
+<div class="categories-section">
+    <h3 class="section-title">
+        <i class="fas fa-th-large"></i> Categorias de Ajuda
+    </h3>
+    
+    
+          
+        <!-- Categoria 1: Locação de Equipamentos -->
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-4">
+        <a href="{% url 'categoria_artigos' slug='locacao' %}" style="text-decoration: none; color: inherit;">
+            <div class="category-card" data-category="locacao">
+                <div class="category-icon" style="background: linear-gradient(135deg, #00A6FF, #0056b3);">
+                    <i class="fas fa-laptop"></i>
+                </div>
+                <h4>Locação de Equipamentos</h4>
+                <p>Contrato, renovação, devolução e troca de equipamentos</p>
+                <div class="category-count">8 artigos</div>
+            </div>
+        </a>
+    </div>
+       
+       
+        <!-- Categoria 2: Suporte Técnico -->
+    <div class="col-md-6 col-lg-4">
+        <a href="{% url 'categoria_artigos' slug='suporte' %}" style="text-decoration: none; color: inherit;">
+            <div class="category-card" data-category="suporte">
+                <div class="category-icon" style="background: linear-gradient(135deg, #28a745, #20c997);">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h4>Suporte Técnico</h4>
+                <p>Problemas com equipamentos, manutenção e configuração</p>
+                <div class="category-count">12 artigos</div>
+            </div>
+        </a>
+    </div>
+
+        <!-- Categoria 3: Projetos de Software -->
+        <div class="col-md-6 col-lg-4">
+            <a href="{% url 'categoria_artigos' slug='desenvolvimento' %}" style="text-decoration: none; color: inherit;">
+                <div class="category-card" data-category="desenvolvimento">
+                    <div class="category-icon" style="background: linear-gradient(135deg, #ffc107, #ff9800);">
+                    <i class="fas fa-code"></i>
+                </div>
+                <h4>Desenvolvimento de Software</h4>
+                <p>Acompanhamento de projetos, entregas e homologação</p>
+                <div class="category-count">10 artigos</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Artigos Populares -->
+<div class="popular-articles-section">
+    <h3 class="section-title">
+        <i class="fas fa-fire"></i> Artigos Mais Acessados
+    </h3>
+
+    <div class="row g-3">
+        <!-- Artigo 1 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="article-card" data-article="renovar-contrato">
+                <div class="article-badge article-badge-guia">Guia</div>
+                <h5>Como renovar meu contrato de locação</h5>
+                <p class="article-excerpt">Passo a passo para renovar seu contrato de aluguel de equipamentos com a Citiesoft antes do vencimento.</p>
+                <div class="article-footer">
+                    <span class="article-views"><i class="fas fa-eye"></i> 2.1k visualizações</span>
+                    <span class="article-rating"><i class="fas fa-star"></i> 4.9</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Artigo 2 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="article-card" data-article="trocar-equipamento">
+                <div class="article-badge article-badge-tutorial">Tutorial</div>
+                <h5>Solicitar troca de equipamento com defeito</h5>
+                <p class="article-excerpt">Aprenda como abrir uma solicitação de troca quando seu equipamento apresentar problemas técnicos.</p>
+                <div class="article-footer">
+                    <span class="article-views"><i class="fas fa-eye"></i> 1.8k visualizações</span>
+                    <span class="article-rating"><i class="fas fa-star"></i> 4.7</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Artigo 3 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="article-card" data-article="acompanhar-projeto">
+                <div class="article-badge article-badge-guia">Guia</div>
+                <h5>Como acompanhar meu projeto de software</h5>
+                <p class="article-excerpt">Acesse o andamento do desenvolvimento, veja entregas e faça homologações pelo portal.</p>
+                <div class="article-footer">
+                    <span class="article-views"><i class="fas fa-eye"></i> 1.5k visualizações</span>
+                    <span class="article-rating"><i class="fas fa-star"></i> 4.8</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Artigo 4 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="article-card" data-article="politica-devolucao">
+                <div class="article-badge article-badge-faq">FAQ</div>
+                <h5>Política de devolução de equipamentos</h5>
+                <p class="article-excerpt">Entenda as regras, prazos e procedimentos para devolver equipamentos alugados.</p>
+                <div class="article-footer">
+                    <span class="article-views"><i class="fas fa-eye"></i> 1.3k visualizações</span>
+                    <span class="article-rating"><i class="fas fa-star"></i> 4.6</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Artigo 5 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="article-card" data-article="backup-dados">
+                <div class="article-badge article-badge-tutorial">Tutorial</div>
+                <h5>Fazer backup antes de devolver equipamento</h5>
+                <p class="article-excerpt">Guia completo para salvar seus arquivos antes de devolver um equipamento locado.</p>
+                <div class="article-footer">
+                    <span class="article-views"><i class="fas fa-eye"></i> 950 visualizações</span>
+                    <span class="article-rating"><i class="fas fa-star"></i> 4.9</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Artigo 6 -->
+        <div class="col-md-6 col-lg-4">
+            <div class="article-card" data-article="configurar-equipamento">
+                <div class="article-badge article-badge-tutorial">Tutorial</div>
+                <h5>Configuração inicial do equipamento</h5>
+                <p class="article-excerpt">Aprenda a configurar seu novo equipamento e instalar softwares essenciais.</p>
+                <div class="article-footer">
+                    <span class="article-views"><i class="fas fa-eye"></i> 880 visualizações</span>
+                    <span class="article-rating"><i class="fas fa-star"></i> 4.7</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- FAQ Rápido -->
+<div class="quick-faq-section">
+    <h3 class="section-title">
+        <i class="fas fa-question-circle"></i> Perguntas Frequentes
+    </h3>
+
+    <div class="faq-accordion">
+        <!-- FAQ 1 -->
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <h5>Quanto tempo antes devo solicitar a renovação do contrato?</h5>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Recomendamos solicitar a renovação com <strong>pelo menos 15 dias de antecedência</strong> do vencimento do contrato atual. Isso garante que não haja interrupção no uso dos equipamentos e permite tempo para análise e aprovação.</p>
+                <p>Você pode solicitar a renovação diretamente pelo portal na seção <strong>"Meus Contratos"</strong> ou abrindo um chamado de suporte.</p>
+            </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <h5>O que fazer se meu equipamento apresentar defeito?</h5>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Siga estes passos:</p>
+                <ul>
+                    <li><strong>1.</strong> Abra um chamado imediatamente pelo portal informando o problema em detalhes</li>
+                    <li><strong>2.</strong> Nossa equipe técnica fará um diagnóstico remoto em até 2 horas úteis</li>
+                    <li><strong>3.</strong> Se necessário, faremos a troca do equipamento em até 24 horas úteis</li>
+                    <li><strong>4.</strong> Equipamentos em garantia não geram custo adicional para troca</li>
+                </ul>
+                <p><strong>Importante:</strong> Não tente consertar o equipamento por conta própria, isso pode invalidar a garantia.</p>
+            </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <h5>Como funciona o processo de desenvolvimento do meu software?</h5>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>O desenvolvimento segue estas etapas bem definidas:</p>
+                <ul>
+                    <li><strong>Levantamento de Requisitos:</strong> Reuniões para entender suas necessidades (1-2 semanas)</li>
+                    <li><strong>Planejamento:</strong> Definição de cronograma e funcionalidades prioritárias (1 semana)</li>
+                    <li><strong>Desenvolvimento:</strong> Codificação do sistema em sprints (tempo varia conforme projeto)</li>
+                    <li><strong>Testes e Homologação:</strong> Você testa e aprova cada entrega parcial</li>
+                    <li><strong>Entrega Final:</strong> Deploy em produção e treinamento da equipe</li>
+                    <li><strong>Suporte Pós-entrega:</strong> 3 meses de garantia e correções inclusos</li>
+                </ul>
+                <p>Você acompanha tudo em tempo real pelo portal na seção <strong>"Meus Projetos"</strong>.</p>
+            </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <h5>Posso adicionar mais equipamentos ao meu contrato atual?</h5>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Sim! Você pode adicionar equipamentos a qualquer momento através de um <strong>aditivo contratual</strong>.</p>
+                <p><strong>Como solicitar:</strong></p>
+                <ul>
+                    <li>Abra um chamado no portal informando os equipamentos desejados e quantidades</li>
+                    <li>Nossa equipe comercial enviará uma proposta detalhada em até 24h úteis</li>
+                    <li>Após aprovação, os equipamentos são entregues em até 3 dias úteis</li>
+                    <li>O valor será adicionado proporcionalmente à mensalidade atual</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- FAQ 5 -->
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <h5>Como faço para solicitar mudanças no software em desenvolvimento?</h5>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Mudanças no projeto podem ser solicitadas de duas formas:</p>
+                <ul>
+                    <li><strong>Mudanças pequenas:</strong> Ajustes dentro do escopo original podem ser feitas sem custo adicional durante a fase de desenvolvimento</li>
+                    <li><strong>Mudanças grandes:</strong> Novas funcionalidades fora do escopo original requerem um aditivo de contrato com análise de impacto</li>
+                </ul>
+                <p>Para solicitar, acesse <strong>"Meus Projetos" > "Solicitações de Mudança"</strong> e descreva detalhadamente o que deseja alterar. Nossa equipe analisará e retornará em até 48h com viabilidade técnica e custos (se aplicável).</p>
+            </div>
+        </div>
+
+        <!-- FAQ 6 -->
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <h5>Há multa por cancelamento antecipado do contrato?</h5>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Depende do tipo de contrato vigente:</p>
+                <ul>
+                    <li><strong>Contratos mensais:</strong> Sem multa, apenas aviso prévio de 30 dias</li>
+                    <li><strong>Contratos anuais:</strong> Multa de 20% sobre o valor restante se cancelado antes de 6 meses</li>
+                    <li><strong>Contratos plurianuais:</strong> Multa de 30% sobre o valor total restante</li>
+                </ul>
+                <p>Para cancelar, envie uma solicitação formal através do portal ou por e-mail para <strong>contrato@citiesoft.com</strong> com 30 dias de antecedência mínima.</p>
+            </div>
+        </div>
+
+        <!-- FAQ 7 -->
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <h5>Como fazer backup dos meus dados antes de devolver o equipamento?</h5>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Siga este passo a passo para garantir que seus dados estejam seguros:</p>
+                <ul>
+                    <li><strong>1.</strong> Identifique todos os arquivos importantes (documentos, fotos, projetos)</li>
+                    <li><strong>2.</strong> Utilize um HD externo, pen drive ou armazenamento em nuvem (Google Drive, OneDrive)</li>
+                    <li><strong>3.</strong> Copie todos os arquivos das pastas: Documentos, Desktop, Downloads e outras personalizadas</li>
+                    <li><strong>4.</strong> Exporte favoritos do navegador e configurações de e-mail, se necessário</li>
+                    <li><strong>5.</strong> Verifique se todos os arquivos foram copiados corretamente</li>
+                </ul>
+                <p><strong>Importante:</strong> A Citiesoft não se responsabiliza por dados deixados no equipamento após a devolução. Todo equipamento é formatado antes de uma nova locação.</p>
+            </div>
+        </div>
+
+        <!-- FAQ 8 -->
+        <div class="faq-item">
+            <div class="faq-question" onclick="toggleFAQ(this)">
+                <h5>Qual o prazo de atendimento para chamados técnicos?</h5>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+                <p>Os prazos variam conforme a prioridade do chamado:</p>
+                <ul>
+                    <li><strong>Urgente:</strong> Equipamento completamente inoperante - atendimento em até 2 horas</li>
+                    <li><strong>Alta:</strong> Problema grave mas com possibilidade de uso - atendimento em até 4 horas</li>
+                    <li><strong>Média:</strong> Problema que não impede o uso - atendimento em até 8 horas</li>
+                    <li><strong>Baixa:</strong> Dúvidas e solicitações gerais - atendimento em até 24 horas</li>
+                </ul>
+                <p>Os prazos contam apenas em <strong>horário comercial</strong> (segunda a sexta, 8h às 18h). Chamados abertos fora desse horário são contabilizados a partir do próximo dia útil.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Call to Action -->
+<div class="cta-section">
+    <div class="cta-content">
+        <i class="fas fa-headset"></i>
+        <h3>Ainda precisa de ajuda?</h3>
+        <p>Nossa equipe está disponível para atendê-lo!</p>
+        <div>
+            <button class="btn-cta" onclick="openTicket()">
+                <i class="fas fa-plus-circle"></i> Abrir Chamado
+            </button>
+            <button class="btn-cta btn-cta-secondary" onclick="showContactInfo()">
+                <i class="fas fa-phone-alt"></i> Falar com Suporte
+            </button>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'menu/js/base_conhecimento.js' %}"></script>
+{% endblock %}
