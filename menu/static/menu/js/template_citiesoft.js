@@ -58,12 +58,6 @@ function initializeMenuConfig() {
                     icon: 'fas fa-ticket-alt' 
                 },
                 { 
-                    id: 'relatorio-usuarios', 
-                    title: 'Relatório de Usuários', 
-                    url: window.DjangoURLs ? window.DjangoURLs.pessoas_ativas : '#', 
-                    icon: 'fas fa-users' 
-                },
-                { 
                     id: 'relatorio-analise', 
                     title: 'Análise e Métricas', 
                     url: window.DjangoURLs ? window.DjangoURLs.relatorios_atendimento : '#', 
@@ -94,7 +88,14 @@ function initializeMenuConfig() {
                     title: 'Atribuição de Tickets', 
                     url: window.DjangoURLs ? window.DjangoURLs.atribuicao_tickets : '#', 
                     icon: 'fas fa-laptop' 
-                }            ]
+                },
+                { 
+                    id: 'relatorio-usuarios', 
+                    title: 'Relatório de Usuários', 
+                    url: window.DjangoURLs ? window.DjangoURLs.pessoas_ativas : '#', 
+                    icon: 'fas fa-users' 
+                }
+            ]
         },
         {
             type: 'divider'
@@ -113,29 +114,29 @@ function initializeMenuConfig() {
             url: '#',
             submenu: [
                 { 
-                    id: 'dicas-manutencao', 
-                    title: 'Dicas de Manutenção', 
-                    url: '#', 
-                    icon: 'fas fa-tools' 
+                    id: 'gerenciar-artigos', 
+                    title: 'Gerenciar Artigos', 
+                    url: window.DjangoURLs ? window.DjangoURLs.admin_base_conhecimento :'/menu/admin_base_conhecimento/', 
+                    icon: 'fas fa-edit'
                 },
                 { 
-                    id: 'glossario', 
-                    title: 'Glossário', 
-                    url: '#', 
-                    icon: 'fas fa-book-open' 
+                    id: 'Site oficial', 
+                    title: 'Site Oficial', 
+                    url: 'https://citiesoft.com.br/',  
+                    icon: 'fas fa-laptop-code'   
                 },
                 { 
-                    id: 'dicionario-software', 
-                    title: 'Dicionário de Software', 
-                    url: '#', 
-                    icon: 'fas fa-laptop-code' 
+                    id: 'quem-somos', 
+                    title: 'Quem Somos', 
+                    url:  'https://citiesoft.com.br/about', 
+                    icon: 'fas fa-building'  
                 },
-                { 
+                /*{ 
                     id: 'artigos', 
                     title: 'Artigos', 
                     url: '#', 
                     icon: 'fas fa-newspaper' 
-                }
+                }*/
             ]
         },
         {

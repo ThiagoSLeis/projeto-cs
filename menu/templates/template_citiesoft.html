@@ -35,6 +35,8 @@
             register: '{% url "register" %}',
             atribuicao_tickets: '{% url "atribuicao_tickets" %}',
             autorizacao_usuarios: '{% url "autorizacao_usuarios" %}',
+            admin_base_conhecimento: '{% url "admin_base_conhecimento" %}',
+        
         };
         console.log('✅ URLs Django carregadas:', window.DjangoURLs);
     </script>
@@ -126,26 +128,6 @@
 
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- ===== INJETAR URLS DJANGO ===== -->
-    <script>
-        // Objeto global com as URLs do Django
-        window.DjangoURLs = {
-            citiesoft_home: '{% url "citiesoft_home" %}',
-            abrir_chamado: '{% url "abrir_chamado" %}',
-            cadastro_ativo: '{% url "cadastro_ativo" %}',
-            cadastro_contrato: '{% url "cadastro_contrato" %}',
-            relatorios_atendimento: '{% url "relatorios_atendimento" %}',
-            relatorio_ativos: '{% url "relatorio_ativos" %}',
-            metricas_kpi: '{% url "metricas_kpi" %}',
-            pessoas_ativas: '{% url "pessoas_ativas" %}',
-            register: '{% url "register" %}',
-            atribuicao_tickets: '{% url "atribuicao_tickets" %}',
-            autorizacao_usuarios: '{% url "autorizacao_usuarios" %}',
-        };
-        
-        console.log('✓ URLs Django injetadas:', window.DjangoURLs);
-    </script>
     
     <!-- JS Base (obrigatório em todas as telas) -->
     <script src="{% static 'menu/js/template_citiesoft.js' %}"></script>

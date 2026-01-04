@@ -14,27 +14,36 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 def login_view(request):
     if request.method == 'POST':
-        cpf_com_formatacao = request.POST.get('cpf')
+        cpf = request.POST.get('cpf')
         password = request.POST.get('password')
 
-        if not cpf_com_formatacao:
-            messages.error(request, 'Por favor, digite seu CPF.')
-            return render(request, 'authentication/login.html')
+        user = authenticate(request, username=cpf, password=password)
 
-        # Limpa a formatação do CPF, deixando apenas os números
-        cpf_limpo = ''.join(re.findall(r'\d', cpf_com_formatacao))
-
-        # Usa o CPF limpo para autenticar
-        user = authenticate(request, username=cpf_limpo, password=password)
-
-        if user is not None:
-            login(request, user)
-            return redirect('citiesoft_home')
-        else:
+        if not user:
             messages.error(request, 'CPF ou senha inválidos.')
             return render(request, 'authentication/login.html')
 
+        if not user.is_approved:
+            messages.error(request, 'Seu cadastro ainda não foi aprovado.')
+            return render(request, 'authentication/login.html')
+
+        login(request, user)
+
+        if user.role == 'admin':
+            return redirect('citiesoft_home')
+
+        if user.role == 'funcionario':
+            return redirect('citiesoft_home')
+
+        if user.role == 'cliente':
+            return redirect('template_cliente')
+
+        messages.error(request, 'Perfil inválido.')
+        return redirect('login')
+
     return render(request, 'authentication/login.html')
+
+
 
 
 @login_required
@@ -48,17 +57,25 @@ def menu_view(request):
 
 def register_view(request):
     if request.method == 'POST':
-        # 1. Cria uma instância do formulário com os dados enviados (request.POST)
         form = RegistrationForm(request.POST)
         if form.is_valid():
-            # Se for válido, salva o novo usuário no banco de dados.
-            # O form.save() já cuida de criptografar a senha!
-            form.save()
-            messages.success(request, 'Cadastro realizado com sucesso! Por favor, faça o login.')
+            user = form.save(commit=False)
+
+            user.is_active = True           # pode autenticar
+            user.is_approved = False        # ainda NÃO aprovado
+            user.save()
+
+            messages.success(
+                request,
+                'Cadastro realizado! Aguarde a aprovação do administrador.'
+            )
             return redirect('login')
+
     else:
         form = RegistrationForm()
+
     return render(request, 'authentication/register.html', {'form': form})
+
 
 def recuperar_view (request):
     if request.method == 'POST':

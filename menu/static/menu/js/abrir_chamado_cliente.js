@@ -457,7 +457,7 @@ function initializeCharCounter() {
 // ===== REVISÃO DO FORMULÁRIO =====
 function initializeFormReview() {
     // Listeners para atualizar preview ao digitar
-    const formFields = ['assunto', 'area', 'categoria', 'prioridade', 'descricao', 'passos_reproduzir'];
+    const formFields = ['assunto', 'area', 'categoria', 'prioridade', 'descricao'];
     
     formFields.forEach(fieldId => {
         const field = document.getElementById(fieldId);
@@ -503,16 +503,6 @@ function updateReview() {
     // Descrição
     const descricao = document.getElementById('descricao').value;
     document.getElementById('review-descricao').textContent = descricao || '-';
-
-    // Passos para Reproduzir
-    const passos = document.getElementById('passos_reproduzir').value;
-    const passosContainer = document.getElementById('review-passos-container');
-    if (passos.trim()) {
-        passosContainer.style.display = 'block';
-        document.getElementById('review-passos').textContent = passos;
-    } else {
-        passosContainer.style.display = 'none';
-    }
 
     // Anexos
     const anexosContainer = document.getElementById('review-anexos-container');

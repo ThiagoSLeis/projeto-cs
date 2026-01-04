@@ -7,6 +7,13 @@ let menuConfig = [];
 function initializeMenuConfig() {
     menuConfig = [
         {
+            id: 'painel',
+            title: 'Painel Principal',
+            icon: 'fas fa-tachometer-alt',
+            url: window.DjangoURLs ? window.DjangoURLs.template_cliente : '/menu/template_cliente/',
+            active: true
+        },   
+        {
             id: 'novo-chamado',
             title: '+ Novo Chamado',
             icon: 'fas fa-plus-circle',

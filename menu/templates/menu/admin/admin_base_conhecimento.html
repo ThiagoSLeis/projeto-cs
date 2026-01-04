@@ -1,0 +1,371 @@
+{% extends 'template_citiesoft.html' %}
+{% load static %}
+
+
+{% block title %}Gerenciar Base de Conhecimento - Citiesoft{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'menu/css/admin_base_conhecimento.css' %}" rel="stylesheet">
+<!-- TinyMCE CDN -->
+<script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+{% endblock %}
+
+{% block page_header %}
+<h1><i class="fas fa-book"></i> Gerenciar Base de Conhecimento</h1>
+<p>Crie e gerencie artigos, tutoriais, guias e FAQs</p>
+{% endblock %}
+
+{% block content %}
+<div class="knowledge-container">
+    <!-- Stats Header -->
+    <div class="stats-header">
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <i class="fas fa-file-alt"></i>
+            </div>
+            <div class="stat-info">
+                <h3 id="totalArticles">0</h3>
+                <p>Total de Artigos</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon green">
+                <i class="fas fa-eye"></i>
+            </div>
+            <div class="stat-info">
+                <h3 id="totalViews">0</h3>
+                <p>Visualizações</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon yellow">
+                <i class="fas fa-star"></i>
+            </div>
+            <div class="stat-info">
+                <h3 id="featuredArticles">0</h3>
+                <p>Em Destaque</p>
+            </div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon red">
+                <i class="fas fa-thumbs-up"></i>
+            </div>
+            <div class="stat-info">
+                <h3 id="avgRating">0%</h3>
+                <p>Aprovação Média</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="content-toolbar">
+        <div class="search-box">
+            <input type="text" id="searchArticles" placeholder="Buscar artigos...">
+            <i class="fas fa-search"></i>
+        </div>
+        <div class="toolbar-actions">
+            <button class="btn-secondary" id="btnExport">
+                <i class="fas fa-download"></i> Exportar
+            </button>
+            <button class="btn-primary" id="btnNewArticle">
+                <i class="fas fa-plus"></i> Novo Artigo
+            </button>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="filters-bar">
+        <div class="filter-group">
+            <label>Categoria</label>
+            <select id="filterCategory">
+                <option value="">Todas as Categorias</option>
+                {% for categoria in categorias %}
+                <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Tipo</label>
+            <select id="filterType">
+                <option value="">Todos os Tipos</option>
+                <option value="tutorial">Tutorial</option>
+                <option value="guia">Guia</option>
+                <option value="faq">FAQ</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Status</label>
+            <select id="filterStatus">
+                <option value="">Todos</option>
+                <option value="ativo">Ativos</option>
+                <option value="inativo">Inativos</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label>Ordenar por</label>
+            <select id="filterSort">
+                <option value="recente">Mais Recentes</option>
+                <option value="antigo">Mais Antigos</option>
+                <option value="visualizacoes">Mais Visualizados</option>
+                <option value="titulo">Título A-Z</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Articles List -->
+    <div class="articles-list">
+        <table class="articles-table">
+            <thead>
+                <tr>
+                    <th>Artigo</th>
+                    <th>Tipo</th>
+                    <th>Categoria</th>
+                    <th>Status</th>
+                    <th>Métricas</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="articlesTableBody">
+                <!-- Artigos serão inseridos aqui via JavaScript -->
+            </tbody>
+        </table>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState" style="display: none;">
+            <i class="fas fa-inbox"></i>
+            <h3>Nenhum artigo cadastrado</h3>
+            <p>Clique no botão "Novo Artigo" para começar</p>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Novo/Editar Artigo -->
+<div class="modal fade" id="articleModal" tabindex="-1" data-bs-backdrop="static">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTitle">
+                    <i class="fas fa-plus-circle"></i> Novo Artigo
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="articleForm">
+                    {% csrf_token %}
+                    <input type="hidden" id="articleId">
+
+                    <!-- Informações Básicas -->
+                    <h6 class="section-title">
+                        <i class="fas fa-info-circle"></i> Informações Básicas
+                    </h6>
+
+                    <div class="form-group">
+                        <label for="titulo" class="form-label">
+                            <i class="fas fa-heading"></i> Título
+                            <span class="required">*</span>
+                        </label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="titulo" 
+                            placeholder="Ex: Como resetar sua senha no sistema"
+                            required
+                            maxlength="200"
+                        >
+                        <small class="form-text">Título claro e descritivo (máx. 200 caracteres)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="slug" class="form-label">
+                            <i class="fas fa-link"></i> Slug (URL)
+                        </label>
+                        <input 
+                            type="text" 
+                            class="form-control" 
+                            id="slug" 
+                            placeholder="como-resetar-sua-senha"
+                            readonly
+                            style="background: #f8f9fa;"
+                        >
+                        <small class="form-text">Gerado automaticamente a partir do título</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="resumo" class="form-label">
+                            <i class="fas fa-align-left"></i> Resumo
+                            <span class="required">*</span>
+                        </label>
+                        <textarea 
+                            class="form-control" 
+                            id="resumo" 
+                            rows="3"
+                            placeholder="Breve descrição do artigo (aparece nas listagens)"
+                            required
+                            maxlength="300"
+                        ></textarea>
+                        <small class="form-text">Resumo para listagens e SEO (máx. 300 caracteres)</small>
+                    </div>
+
+                    <!-- Classificação -->
+                    <h6 class="section-title">
+                        <i class="fas fa-layer-group"></i> Classificação
+                    </h6>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="categoria" class="form-label">
+                                <i class="fas fa-folder"></i> Categoria
+                                <span class="required">*</span>
+                            </label>
+                            <select class="form-control" id="categoria" required>
+                                <option value="">Selecione uma categoria</option>
+                                {% for categoria in categorias %}
+                                <option value="{{ categoria.id }}">{{ categoria.nome }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tipo" class="form-label">
+                                <i class="fas fa-tag"></i> Tipo
+                                <span class="required">*</span>
+                            </label>
+                            <select class="form-control" id="tipo" required>
+                                <option value="">Selecione o tipo</option>
+                                <option value="tutorial">Tutorial</option>
+                                <option value="guia">Guia</option>
+                                <option value="faq">FAQ</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tags" class="form-label">
+                            <i class="fas fa-tags"></i> Tags
+                        </label>
+                        <div class="tags-input-container" id="tagsContainer">
+                            <input 
+                                type="text" 
+                                class="tags-input" 
+                                id="tagsInput"
+                                placeholder="Digite uma tag e pressione Enter"
+                            >
+                        </div>
+                        <small class="form-text">Adicione tags para facilitar buscas (pressione Enter para adicionar)</small>
+                    </div>
+
+                    <!-- Conteúdo -->
+                    <h6 class="section-title">
+                        <i class="fas fa-file-alt"></i> Conteúdo
+                    </h6>
+
+                    <div class="form-group">
+                        <label for="conteudo" class="form-label">
+                            <i class="fas fa-edit"></i> Conteúdo do Artigo
+                            <span class="required">*</span>
+                        </label>
+                        <textarea id="conteudo" class="form-control"></textarea>
+                        <small class="form-text">Use o editor para formatar o conteúdo com imagens, listas, código, etc.</small>
+                    </div>
+
+                    <!-- Metadados -->
+                    <h6 class="section-title">
+                        <i class="fas fa-cog"></i> Metadados
+                    </h6>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tempo_leitura" class="form-label">
+                                <i class="fas fa-clock"></i> Tempo de Leitura (minutos)
+                            </label>
+                            <input 
+                                type="number" 
+                                class="form-control" 
+                                id="tempo_leitura" 
+                                min="1"
+                                max="60"
+                                value="5"
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Status -->
+                    <h6 class="section-title">
+                        <i class="fas fa-toggle-on"></i> Status de Publicação
+                    </h6>
+
+                    <div class="form-check">
+                        <input 
+                            type="checkbox" 
+                            class="form-check-input" 
+                            id="ativo"
+                            checked
+                        >
+                        <label class="form-check-label" for="ativo">
+                            <i class="fas fa-eye"></i> Artigo ativo (visível para usuários)
+                        </label>
+                    </div>
+
+                    <div class="form-check">
+                        <input 
+                            type="checkbox" 
+                            class="form-check-input" 
+                            id="destaque"
+                        >
+                        <label class="form-check-label" for="destaque">
+                            <i class="fas fa-star"></i> Destacar artigo (aparece em destaque na home)
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button type="button" class="btn-secondary" id="btnSaveDraft">
+                    <i class="fas fa-save"></i> Salvar Rascunho
+                </button>
+                <button type="button" class="btn-primary" id="btnPublish">
+                    <i class="fas fa-paper-plane"></i> Publicar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Delete Confirmation -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-trash-alt"></i> Confirmar Exclusão
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Atenção!</strong> Esta ação não pode ser desfeita.
+                </div>
+                <p>Tem certeza que deseja excluir o artigo:</p>
+                <p><strong id="deleteArticleTitle"></strong></p>
+                <input type="hidden" id="deleteArticleId">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+                <button type="button" class="btn btn-delete" id="btnConfirmDelete">
+                    <i class="fas fa-trash"></i> Excluir
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js" referrerpolicy="origin"></script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'menu/js/admin_base_conhecimento.js' %}"></script>
+{% endblock %}

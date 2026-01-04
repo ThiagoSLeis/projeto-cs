@@ -16,7 +16,7 @@ function trackArticleView() {
     }
 
     // Enviar analytics quando usuário visualiza artigo
-    fetch(`/api/conhecimento/artigos/${ARTIGO_SLUG}/view/`, {
+    fetch(`/menu/api/conhecimento/artigos/${ARTIGO_SLUG}/view/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ function rateArticle(articleSlug, isHelpful) {
     }
 
     // Enviar avaliação para o backend
-    fetch(`/api/conhecimento/artigos/${articleSlug}/rate/`, {
+    fetch(`/menu/api/conhecimento/artigos/${articleSlug}/rate/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
