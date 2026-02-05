@@ -29,7 +29,6 @@ body.dark .stat-card {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0, 166, 255, 0.2);
 }
-
 .stat-card.warning {
     border-left-color: var(--warning-yellow);
 }

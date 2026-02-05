@@ -20,7 +20,6 @@
     color: var(--primary-dark);
     text-decoration: underline;
 }
-
 .breadcrumb-nav i.fa-chevron-right {
     color: var(--text-muted);
     font-size: 0.75rem;

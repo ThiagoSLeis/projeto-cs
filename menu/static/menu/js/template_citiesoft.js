@@ -1,7 +1,6 @@
 /* ===== TEMPLATE CITIESOFT BASE - JAVASCRIPT ===== */
 
 let menuConfig = [];
-
 function initializeMenuConfig() {
     // 1. ITENS INICIAIS (Todos veem)
     menuConfig = [

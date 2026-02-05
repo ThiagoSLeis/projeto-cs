@@ -17,7 +17,6 @@ function setupDarkMode() {
             toggleBtn.innerHTML = `<i class="fa-solid fa-moon"></i> <span>Modo Escuro</span>`;
         }
     }
-
     // Configurar evento do botão
     if (toggleBtn) {
         toggleBtn.addEventListener('click', function () {

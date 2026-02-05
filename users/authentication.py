@@ -13,3 +13,4 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         data["role"] = user.role
 
         return data
+

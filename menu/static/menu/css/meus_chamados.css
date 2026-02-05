@@ -32,7 +32,6 @@ body.dark .filter-tab {
     transform: translateY(-2px);
     box-shadow: 0 4px 12px rgba(0, 166, 255, 0.2);
 }
-
 .filter-tab.active {
     background: linear-gradient(135deg, #00A6FF, #0056b3);
     color: white;

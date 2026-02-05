@@ -21,3 +21,4 @@ class Migration(migrations.Migration):
             field=models.CharField(blank=True, max_length=11, null=True, verbose_name='Telefone'),
         ),
     ]
+

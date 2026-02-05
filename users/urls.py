@@ -19,3 +19,4 @@ urlpatterns = [
     # Aprovar funcionário (POST)
     path("funcionario/aprovar/<int:pk>/", AprovarFuncionarioView.as_view()),
 ]
+

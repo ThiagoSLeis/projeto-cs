@@ -22,7 +22,6 @@ function updateCurrentDate() {
         dateElement.textContent = today.charAt(0).toUpperCase() + today.slice(1);
     }
 }
-
 // ===== INICIALIZAR FILTROS =====
 function initFilters() {
     const filterType = document.getElementById('filterType');

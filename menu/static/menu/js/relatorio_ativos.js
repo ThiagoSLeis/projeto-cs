@@ -1,5 +1,4 @@
 /* ===== RELATÓRIO DE ATIVOS - JAVASCRIPT ===== */
-
 // ===== DADOS DOS ATIVOS (Simulados) =====
 const ativosCompletos = [
     { id: 1, patrimonio: 'NB-2025-001', tipo: 'Notebook', marca: 'Dell', modelo: 'Inspiron 15', departamento: 'TI', responsavel: 'João Silva', dataAquisicao: '15/01/2024', status: 'ativo' },

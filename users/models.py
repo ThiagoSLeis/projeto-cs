@@ -42,3 +42,4 @@ class CustomUser(AbstractUser):
     def is_client(self):
         return self.role == 'cliente'
 
+

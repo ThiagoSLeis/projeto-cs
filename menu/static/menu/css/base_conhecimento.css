@@ -14,7 +14,6 @@
     --text-light: #666;
     --text-muted: #999;
 }
-
 /* ===== SEARCH HERO ===== */
 .search-hero {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);

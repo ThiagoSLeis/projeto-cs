@@ -22,7 +22,6 @@ function initSearchInput() {
         }
     });
 }
-
 // ===== REALIZAR NOVA BUSCA =====
 function performNewSearch() {
     const searchInput = document.getElementById('searchInput');

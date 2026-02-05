@@ -18,3 +18,4 @@ class CustomAuthBackend(ModelBackend):
             return True
 
         return False
+    

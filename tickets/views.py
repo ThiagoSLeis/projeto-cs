@@ -157,3 +157,4 @@ class InteracaoTicketViewSet(viewsets.ModelViewSet):
 class CampoPersonalizadoViewSet(viewsets.ModelViewSet):
     queryset = CampoPersonalizado.objects.all()
     serializer_class = CampoPersonalizadoSerializer
+

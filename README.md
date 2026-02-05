@@ -2,7 +2,7 @@
 
 Este projeto é uma aplicação desenvolvida com **Django** utilizando **MySQL** como banco de dados.
 
----
+--- 
 
 ## 📌 Pré-requisitos
 

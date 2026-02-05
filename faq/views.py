@@ -3,7 +3,6 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 from .models import FAQ
 from .serializers import FAQSerializer
 
-
 class FAQViewSet(viewsets.ModelViewSet):
     queryset = FAQ.objects.all().order_by('-criado_em')
     serializer_class = FAQSerializer

@@ -9,7 +9,6 @@ body {
     background: var(--citiesoft-bg);
     font-family: "Segoe UI", Tahoma, sans-serif;
 }
-
 .register-wrapper {
     max-width: 580px;
     margin: 40px auto;

@@ -17,3 +17,4 @@ class Migration(migrations.Migration):
             field=models.CharField(max_length=14, unique=True, validators=[authentication.validators.validate_cpf], verbose_name='CPF'),
         ),
     ]
+

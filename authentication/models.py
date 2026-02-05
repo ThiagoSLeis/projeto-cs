@@ -10,6 +10,7 @@ class Cliente(models.Model):
         return self.user.username
 
 
+
 class Funcionario(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 

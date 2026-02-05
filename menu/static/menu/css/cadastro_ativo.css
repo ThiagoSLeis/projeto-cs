@@ -14,7 +14,6 @@ body.dark .content-card {
     border-color: rgba(255, 255, 255, 0.06);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
-
 /* Content Header com botão Voltar */
 .content-header .header-actions {
     display: flex;

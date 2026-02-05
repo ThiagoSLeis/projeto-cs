@@ -16,7 +16,6 @@ document.querySelectorAll('.type-card').forEach(card => {
         }
     });
 });
-
 // ===== MÁSCARAS =====
 document.querySelectorAll('.cpf-mask').forEach(input => {
     input.addEventListener('input', function(e) {

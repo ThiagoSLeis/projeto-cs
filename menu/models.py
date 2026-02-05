@@ -146,3 +146,5 @@ class Mensagem(models.Model):
 
     def __str__(self):
         return f"Mensagem de {self.remetente} no Chamado #{self.chamado_id}"
+    
+    

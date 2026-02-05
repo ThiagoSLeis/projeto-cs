@@ -41,3 +41,4 @@ class CanUpdateTicketStatus(BasePermission):
             return obj.atribuido_para == request.user
 
         return False
+

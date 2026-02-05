@@ -23,7 +23,6 @@ function updateCurrentDate() {
         dateElement.textContent = today.charAt(0).toUpperCase() + today.slice(1);
     }
 }
-
 // ===== TOGGLE FAQ =====
 function toggleFAQ(element) {
     const faqItem = element.parentElement;

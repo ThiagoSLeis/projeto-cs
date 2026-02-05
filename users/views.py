@@ -11,8 +11,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
 
 
-
-
 class UserViewSet(viewsets.ModelViewSet):
     """
     Endpoint da API que permite aos usuários serem vistos ou editados.

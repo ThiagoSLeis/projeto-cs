@@ -94,3 +94,5 @@ class MensagemAdmin(admin.ModelAdmin):
     def texto_preview(self, obj):
         return obj.texto[:50] + "..." if len(obj.texto) > 50 else obj.texto
     texto_preview.short_description = 'Mensagem'
+
+    

@@ -1,7 +1,6 @@
 import re
 from django.core.exceptions import ValidationError
 
-
 def validate_cpf(value):
     # Limpa o valor, deixando apenas os dígitos
     cpf = ''.join(re.findall(r'\d', str(value)))

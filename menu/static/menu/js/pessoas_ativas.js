@@ -4,7 +4,6 @@
 let pessoasData = [];
 let pessoasFiltradas = [];
 let actionConfirm = null;
-
 // ===== DADOS MOCK (Substitua por chamada AJAX ao Django) =====
 function getMockPessoas() {
     return [

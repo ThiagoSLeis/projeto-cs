@@ -29,7 +29,6 @@ function initFilterTabs() {
         });
     });
 }
-
 // ===== FUNÇÃO DE FILTRO =====
 function filterChamados(filter, tableBody, emptyState, tableContainer) {
     const rows = tableBody.querySelectorAll('tr');

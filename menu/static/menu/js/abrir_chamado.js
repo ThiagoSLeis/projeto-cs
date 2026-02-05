@@ -14,7 +14,6 @@ function setupFormValidation() {
     const form = document.getElementById('formAbrirChamado');
     
     if (!form) return;
-
     form.addEventListener('submit', function(e) {
         e.preventDefault();
 

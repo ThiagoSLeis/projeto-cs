@@ -12,7 +12,6 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeEventListeners();
     initializeTagsInput();
 });
-
 // ===== CARREGAR ARTIGOS =====
 function loadArticles() {
     fetch('/menu/api/artigos/')

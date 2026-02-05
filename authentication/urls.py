@@ -4,7 +4,6 @@ from django.contrib.auth import views as auth_views
 from authentication.views import MyTokenObtainPairView
 from rest_framework_simplejwt.views import TokenRefreshView
 
-
 urlpatterns = [
     path('', login_view, name='login'),
     path('dashboard/', dashboard_view, name='dashboard'),

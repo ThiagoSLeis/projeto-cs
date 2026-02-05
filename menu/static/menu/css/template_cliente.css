@@ -36,7 +36,6 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
 }
-
 body.dark {
     background: #0a1629;
     color: #e6e6e6;

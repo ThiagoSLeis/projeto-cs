@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function() {
     setupValorCalculation();
     console.log('✓ Formulário Cadastro Contrato carregado!');
 });
-
 // ===== VALIDAÇÃO DO FORMULÁRIO =====
 function setupFormValidation() {
     const form = document.getElementById('formCadastroContrato');

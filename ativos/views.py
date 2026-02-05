@@ -8,7 +8,6 @@ from .serializers import (
     AtivoSerializer, SoftwareSerializer, InstalacaoSoftwareSerializer,
     ContratoSerializer, ContratoAtivoSerializer
 )
-
 class TipoAtivoViewSet(viewsets.ModelViewSet):
     queryset = TipoAtivo.objects.all()
     serializer_class = TipoAtivoSerializer

@@ -18,7 +18,6 @@ function initMeusTickets() {
     // Atualiza contadores se necessário
     updateCounters();
 }
-
 /**
  * Anima a entrada dos cards de estatísticas
  */

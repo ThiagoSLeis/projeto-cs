@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function() {
     
     console.log('✓ Formulário Cadastro Ativo carregado com sucesso!');
 });
-
 // ===== VALIDAÇÃO DO FORMULÁRIO =====
 function setupFormValidation() {
     const form = document.getElementById('formCadastroAtivo');

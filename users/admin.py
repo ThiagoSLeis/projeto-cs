@@ -23,3 +23,4 @@ class CustomUserAdmin(UserAdmin):
 
     list_display = ("cpf", "username", "email", "role", "is_approved")
     search_fields = ("cpf", "username", "email")
+

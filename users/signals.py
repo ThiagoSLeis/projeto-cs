@@ -26,3 +26,4 @@ def manage_employee_permissions(sender, instance, created, **kwargs):
         # remove se tiver
         if instance.has_perm('tickets.atribuir_ticket'):
             instance.user_permissions.remove(perm)
+

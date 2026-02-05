@@ -15,7 +15,6 @@ class RegistrationForm(forms.ModelForm):
         label='Confirmação de Senha', 
         widget=forms.PasswordInput(attrs={'placeholder': 'Confirme sua senha'})
     )
-
     class Meta:
         model = CustomUser
         fields = ('first_name', 'last_name', 'username', 'email', 'cpf')

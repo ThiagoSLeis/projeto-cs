@@ -7,7 +7,6 @@ document.addEventListener('DOMContentLoaded', function() {
     setupFiltros();
     console.log('✓ Painel de Relatórios carregado!');
 });
-
 // ===== INICIALIZAR GRÁFICOS =====
 function inicializarGraficos() {
     // Gráfico 1: Status

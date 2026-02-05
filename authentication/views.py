@@ -11,7 +11,6 @@ from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 
-
 def login_view(request):
     if request.method == 'POST':
         cpf = request.POST.get('cpf')

@@ -77,3 +77,4 @@ class TicketStatusUpdateSerializer(serializers.Serializer):
     status = serializers.PrimaryKeyRelatedField(
         queryset=StatusTicket.objects.all()
     )
+

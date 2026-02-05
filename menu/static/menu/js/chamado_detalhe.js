@@ -18,7 +18,6 @@ function toggleDetalhes() {
         modal.style.display = 'flex';
     }
 }
-
 // Fechar modal ao clicar fora dele
 window.onclick = function(event) {
     const modal = document.getElementById('modalDetalhes');

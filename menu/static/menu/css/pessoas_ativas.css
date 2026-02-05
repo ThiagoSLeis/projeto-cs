@@ -30,7 +30,6 @@
     box-shadow: 0 0 0 0.2rem rgba(0, 166, 255, 0.15);
     outline: none;
 }
-
 body.dark .filter-group input,
 body.dark .filter-group select {
     background-color: #1a2838;

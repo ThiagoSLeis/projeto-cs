@@ -22,7 +22,6 @@
     font-size: 0.95rem;
     transition: all 0.3s ease;
 }
-
 .filter-group input:focus,
 .filter-group select:focus {
     border-color: var(--primary-blue);

@@ -3,3 +3,4 @@ STATUS_FUNCIONARIO_PERMITIDOS = [
     'Em Atendimento',
     'Aguardando Cliente',
 ]
+

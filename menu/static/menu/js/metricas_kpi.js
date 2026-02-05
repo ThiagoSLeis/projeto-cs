@@ -28,7 +28,6 @@ Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Ro
 function createChartStatus() {
     const ctx = document.getElementById('chartStatus');
     if (!ctx) return;
-
     new Chart(ctx, {
         type: 'bar',
         data: {

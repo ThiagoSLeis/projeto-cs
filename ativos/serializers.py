@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import TipoAtivo, Fabricante, Localizacao, Ativo, Software, InstalacaoSoftware, Contrato, ContratoAtivo
 
+
 class TipoAtivoSerializer(serializers.ModelSerializer):
     class Meta:
         model = TipoAtivo

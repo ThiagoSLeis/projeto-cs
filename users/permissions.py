@@ -43,3 +43,4 @@ class IsAdmin(BasePermission):
             request.user.is_authenticated and
             request.user.role == "admin"
         )
+

@@ -14,7 +14,6 @@ function trackArticleView() {
         console.error('ARTIGO_SLUG não está definido');
         return;
     }
-
     // Enviar analytics quando usuário visualiza artigo
     fetch(`/menu/api/conhecimento/artigos/${ARTIGO_SLUG}/view/`, {
         method: 'POST',

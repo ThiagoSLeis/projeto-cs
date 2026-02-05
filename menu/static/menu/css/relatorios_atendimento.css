@@ -33,11 +33,9 @@ body.dark .content-header .header-actions {
 .content-header h1 {
     margin-bottom: 10px;
 }
-
 .content-header p {
     margin: 5px 0 0 0 !important;
 }
-
 .content-header .btn {
     padding: 12px 24px;
     border-radius: 8px;

@@ -2,7 +2,6 @@
 
 // ===== MENU CONFIGURATION PARA CLIENTES =====
 let menuConfig = [];
-
 // Função para inicializar o menu com URLs
 function initializeMenuConfig() {
     menuConfig = [

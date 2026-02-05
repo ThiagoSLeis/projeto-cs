@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class FAQ(models.Model):
     pergunta = models.CharField(max_length=500)
     resposta = models.TextField()

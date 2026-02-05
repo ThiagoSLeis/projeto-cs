@@ -16,7 +16,6 @@ const categoriasPorArea = {
         { value: 'aplicativo', text: 'Aplicativo / Software' },
         { value: 'licenca', text: 'Licença de Software' }
     ],
-
     rede: [
         { value: 'internet', text: 'Conexão com a Internet' },
         { value: 'wifi', text: 'Rede Wi-Fi' },

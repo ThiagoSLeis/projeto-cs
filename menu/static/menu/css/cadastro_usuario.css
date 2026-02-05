@@ -23,7 +23,6 @@
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(25, 118, 210, 0.2);
 }
-
 .type-card.active {
     border-color: #1976d2;
     box-shadow: 0 8px 20px rgba(25, 118, 210, 0.3);

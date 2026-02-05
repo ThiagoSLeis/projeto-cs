@@ -16,7 +16,6 @@ function animateValue(id, start, end, duration) {
         obj.textContent = Math.floor(current);
     }, 16);
 }
-
 /* ===== INITIALIZE CHARTS ===== */
 function initializeCharts() {
     const ctxAtivos = document.getElementById('ativosChart');

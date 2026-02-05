@@ -10,7 +10,6 @@ body {
     font-family: Arial, sans-serif;
     background: linear-gradient(135deg, #8cdcf7, #0101ae);
 }
-
 .login-container {
     /* Largura fixa */  
     width: 400px;

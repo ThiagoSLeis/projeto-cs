@@ -26,7 +26,6 @@
 body.dark .quick-btn {
     background: linear-gradient(135deg, #0d8af0, #004e94);
 }
-
 .quick-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(0, 166, 255, 0.4);

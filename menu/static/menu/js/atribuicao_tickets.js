@@ -9,7 +9,6 @@ const API_ENDPOINTS = {
 };
 
 let ticketsData = [];
-
 // Gerenciador de Interface (UI)
 const UI = {
     loadTechnicians() {
